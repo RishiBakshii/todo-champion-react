@@ -21,10 +21,8 @@ const animationVariants={
 }
 
 const formStyles={
-    position:"fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)"
+    justifySelf:'center',
+    alignSelf:'center'
 }
 
 
@@ -177,7 +175,7 @@ export const TodoList = () => {
     <Stack p={2} rowGap={1} height={'100%'} position={'relative'} bgcolor={theme.palette.primary.dark} width={is820?'100%':'43rem'} justifyContent={'space-between'}>
     
         {/* tabs */}
-        <Stack color={'whitesmoke'} height={'49rem'} sx={{overflowY:"scroll"}}>
+        <Stack color={'whitesmoke'} height={'49rem'}  sx={{overflowY:"scroll"}}>
 
             <TabContext value={selectedSection}>
 
@@ -234,6 +232,9 @@ export const TodoList = () => {
             }
         </AnimatePresence>
 
+
+        {/* <div style={{position:'fixed',width:"10rem",height:"10rem",backgroundColor:'red',justifySelf:'center',alignSelf:'center'}}></div> */}
+
         {/* add todo form */}
         <AnimatePresence>
             {
@@ -258,7 +259,7 @@ export const TodoList = () => {
             }
         </AnimatePresence>
 
-
+        {/* speed dial */}
         <Stack alignSelf={'flex-end'}>
             <SpeedDial direction='left' sx={{justifySelf:"flex-end",alignSelf:'flex-end'}} ariaLabel="Todo-Options"  icon={<SpeedDialIcon />}>
                 {sections.length && <SpeedDialAction onClick={()=>{setShowTodoForm(!showTodoForm);setShowSectionForm(false)}} icon={<AddIcon/>} tooltipTitle={'Add Todo'}/>}
