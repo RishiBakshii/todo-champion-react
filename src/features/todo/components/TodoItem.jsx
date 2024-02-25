@@ -30,7 +30,7 @@ export const TodoItem = ({index,todoTask,editTimestamp,setEditTimestamp,handleDe
         <Stack flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
           {
             inEditState?
-            <TextField value={todoUpdate} fullWidth multiline InputProps={{style:{color:"white"}}} sx={{mr:2}}  onChange={(e)=>setTodoUpdate(e.target.value)}/>
+            <TextField autoFocus value={todoUpdate} fullWidth multiline InputProps={{style:{color:"white"}}} sx={{mr:2}}  onChange={(e)=>setTodoUpdate(e.target.value)}/>
             :<Typography mr={2} variant='body2' color={'whitesmoke'}>{todoTask}</Typography>
           }
 

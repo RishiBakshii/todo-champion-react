@@ -1,5 +1,5 @@
 import { Button, IconButton, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect,useState } from 'react'
 import { TodoItem } from './TodoItem'
 import { motion, AnimatePresence } from 'framer-motion'
 import Tab from '@mui/material/Tab';
@@ -20,6 +20,13 @@ const animationVariants={
     show:{y:0,opacity:1,rotate:'0deg',y:0}
 }
 
+const formStyles={
+    position:"fixed",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)"
+}
+
 
 export const TodoList = () => {
     
@@ -29,16 +36,6 @@ export const TodoList = () => {
     // breakpoints
     const is820=useMediaQuery(theme.breakpoints.down(820))
     const is480=useMediaQuery(theme.breakpoints.down(480))
-
-
-    const addTodoRef=useRef(null)
-    const addSectionRef=useRef(null)
-
-    useEffect(() => {
-        if (addSectionRef && addSectionRef.current) {
-          addSectionRef.current.focus();
-        }
-      }, [addSectionRef]);
 
     // stores section's name
     const [sections,setSections]=useState([])
@@ -177,7 +174,7 @@ export const TodoList = () => {
     }
 
   return (
-    <Stack p={2} rowGap={1} height={'100%'}  position={'relative'} bgcolor={theme.palette.primary.dark} width={is820?'100%':'43rem'} justifyContent={'space-between'}>
+    <Stack p={2} rowGap={1} height={'100%'} position={'relative'} bgcolor={theme.palette.primary.dark} width={is820?'100%':'43rem'} justifyContent={'space-between'}>
     
         {/* tabs */}
         <Stack color={'whitesmoke'} height={'49rem'} sx={{overflowY:"scroll"}}>
@@ -216,7 +213,8 @@ export const TodoList = () => {
         {   
 
             showSectionForm && 
-            <motion.div style={{position:'fixed',top:0,bottom:0,left:0,right:0,justifySelf:'center',alignSelf:'center'}}
+            <motion.div
+                style={formStyles}
                 variants={animationVariants}
                 exit="hide"
                 initial="hide"
@@ -228,7 +226,7 @@ export const TodoList = () => {
                         <Typography color={'white'} variant='h6'>Add section</Typography>
                         <IconButton onClick={()=>setShowSectionForm(false)}><CloseIcon sx={{color:'whitesmoke'}}/></IconButton>
                     </Stack>
-                    <TextField ref={addSectionRef} inputProps={{style:{color:'whitesmoke'}}} value={newSection} onChange={(e)=>setNewSection(e.target.value)}/>
+                    <TextField autoFocus inputProps={{style:{color:'whitesmoke'}}} value={newSection} onChange={(e)=>setNewSection(e.target.value)}/>
                     <Button disabled={!newSection.trim()} onClick={handleAddSection} variant='outlined'>add</Button>
                 </Stack>
             </motion.div>
@@ -241,7 +239,7 @@ export const TodoList = () => {
             {
             showTodoForm && 
             <motion.div
-            style={{justifySelf:'center',alignSelf:'center',position:'fixed',top:0,bottom:0,left:0,right:0}}
+            style={formStyles}
             variants={animationVariants}
             initial="hide"
             animate={'show'}
@@ -253,7 +251,7 @@ export const TodoList = () => {
                         <Typography variant='h6' color={'whitesmoke'}>Add todo</Typography>
                         <IconButton onClick={()=>setShowTodoForm(false)}><CloseIcon sx={{color:'whitesmoke'}}/></IconButton>
                     </Stack>
-                    <TextField value={newTodo} InputProps={{style:{color:'white'}}} onChange={(e)=>setNewTodo(e.target.value)} multiline rows={4}/>
+                    <TextField autoFocus value={newTodo} InputProps={{style:{color:'white'}}} onChange={(e)=>setNewTodo(e.target.value)} multiline rows={4}/>
                     <Button disabled={!newTodo.trim()} onClick={handleAddTodo} variant='outlined'>Add</Button>
                 </Stack>
             </motion.div>
@@ -266,7 +264,6 @@ export const TodoList = () => {
                 {sections.length && <SpeedDialAction onClick={()=>{setShowTodoForm(!showTodoForm);setShowSectionForm(false)}} icon={<AddIcon/>} tooltipTitle={'Add Todo'}/>}
                 <SpeedDialAction onClick={()=>{setShowSectionForm(!showSectionForm);setShowTodoForm(false)}} icon={<PlaylistAddIcon/>} tooltipTitle={'Add Section'}/>
                 {sections?.length && <SpeedDialAction onClick={handleDeleteSection} icon={<BackspaceIcon sx={{color:'red'}}/>} tooltipTitle={'Delete Section'}/>}
-                
             </SpeedDial>
         </Stack>
 
