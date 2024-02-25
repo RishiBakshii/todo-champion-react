@@ -1,4 +1,4 @@
-import { Button, IconButton, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Button, FormHelperText, IconButton, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
 import React, { useEffect,useState } from 'react'
 import { TodoItem } from './TodoItem'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -55,6 +55,9 @@ export const TodoList = () => {
 
     // enables toggling of section form
     const [showSectionForm,setShowSectionForm]=useState(false)
+
+    // 
+    const [sectionDeleteModal,setSectionDeleteModal]=useState(false)
 
     // stores todo form text
     const [newTodo,setNewTodo]=useState('')
@@ -169,6 +172,8 @@ export const TodoList = () => {
         setSections(updatedSections)
 
         localStorage.setItem('sections',JSON.stringify(updatedSections))
+
+        setSectionDeleteModal(false)
     }
 
   return (
@@ -232,9 +237,6 @@ export const TodoList = () => {
             }
         </AnimatePresence>
 
-
-        {/* <div style={{position:'fixed',width:"10rem",height:"10rem",backgroundColor:'red',justifySelf:'center',alignSelf:'center'}}></div> */}
-
         {/* add todo form */}
         <AnimatePresence>
             {
@@ -258,13 +260,41 @@ export const TodoList = () => {
             </motion.div>
             }
         </AnimatePresence>
+        
+        {/* section delete modal */}
+        <AnimatePresence>
+            {
+            sectionDeleteModal && 
+            <motion.div
+            style={formStyles}
+            variants={animationVariants}
+            initial="hide"
+            animate={'show'}
+            exit='hide'
+            transition={{ease:"easeInOut",type:"spring",damping:13,duration:.5}}
+            >
+                <Stack p={2} bgcolor={theme.palette.primary.light} rowGap={2} width={is480?"18rem":'22rem'}>
+                    <Stack flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
+                        <Typography variant='h6' color={'whitesmoke'}>Do you really want to delete section {selectedSection} ?</Typography>
+                        <IconButton sx={{alignSelf:'flex-start'}} onClick={()=>setSectionDeleteModal(false)}><CloseIcon sx={{color:'whitesmoke'}}/></IconButton>
+                    </Stack>
+                    <FormHelperText sx={{color:'red',margin:"0"}}>All todos related to this section will be deleted</FormHelperText>
+                    {/* <Typography fontWeight={300} variant='body2' fontSize={'.9rem'} color={'error'}>All todos related to this section will be deleted</Typography> */}
+                    <Stack flexDirection={'row'} alignItems={'center'} columnGap={is480?1:2} alignSelf={'flex-end'}>
+                        <Button onClick={handleDeleteSection} variant='outlined'>Yes</Button>
+                        <Button onClick={()=>setSectionDeleteModal(false)} variant='outlined' color='error'>Cancel</Button>
+                    </Stack>
+                </Stack>
+            </motion.div>
+            }
+        </AnimatePresence>
 
         {/* speed dial */}
         <Stack alignSelf={'flex-end'}>
             <SpeedDial direction='left' sx={{justifySelf:"flex-end",alignSelf:'flex-end'}} ariaLabel="Todo-Options"  icon={<SpeedDialIcon />}>
-                {sections.length && <SpeedDialAction onClick={()=>{setShowTodoForm(!showTodoForm);setShowSectionForm(false)}} icon={<AddIcon/>} tooltipTitle={'Add Todo'}/>}
-                <SpeedDialAction onClick={()=>{setShowSectionForm(!showSectionForm);setShowTodoForm(false)}} icon={<PlaylistAddIcon/>} tooltipTitle={'Add Section'}/>
-                {sections?.length && <SpeedDialAction onClick={handleDeleteSection} icon={<BackspaceIcon sx={{color:'red'}}/>} tooltipTitle={'Delete Section'}/>}
+                {sections.length && <SpeedDialAction onClick={()=>{setShowTodoForm(!showTodoForm);setShowSectionForm(false);setSectionDeleteModal(false)}} icon={<AddIcon/>} tooltipTitle={'Add Todo'}/>}
+                <SpeedDialAction onClick={()=>{setShowSectionForm(!showSectionForm);setShowTodoForm(false);setSectionDeleteModal(false)}} icon={<PlaylistAddIcon/>} tooltipTitle={'Add Section'}/>
+                {sections?.length && <SpeedDialAction onClick={()=>{setSectionDeleteModal(!sectionDeleteModal);setShowSectionForm(false);setShowTodoForm(false)}} icon={<BackspaceIcon sx={{color:'red'}}/>} tooltipTitle={'Delete Section'}/>}
             </SpeedDial>
         </Stack>
 
