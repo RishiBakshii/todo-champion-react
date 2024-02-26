@@ -33,8 +33,8 @@ export const TodoItem = ({index,todoTask,editTimestamp,setEditTimestamp,handleDe
             inEditState?
             <TextField autoFocus value={todoUpdate} fullWidth multiline InputProps={{style:{color:"white"}}} sx={{mr:2}}  onChange={(e)=>setTodoUpdate(e.target.value)}/>
             :
-            <Stack flexDirection={'row'} alignItems={'center'} columnGap={2}>
-                <FormControlLabel onChange={(e)=>handleToggleComplete(timestamp,e.target.checked)}  checked={isCompleted} control={<Checkbox sx={{color:'white'}}/>} />
+            <Stack flexDirection={'row'} alignItems={'center'} columnGap={is480?1:2}>
+                <FormControlLabel sx={{m:0,p:0}} onChange={(e)=>handleToggleComplete(timestamp,e.target.checked)}  checked={isCompleted} control={<Checkbox sx={{color:'white'}}/>} />
                 <Typography sx={{textDecoration:isCompleted?"line-through":''}} mr={2} variant='body2' color={'whitesmoke'}>{todoTask}</Typography>
             </Stack>
           }
