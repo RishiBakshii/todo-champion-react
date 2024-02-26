@@ -107,7 +107,7 @@ export const TodoList = () => {
             }
         }
 
-    },[selectedSection])
+    },[selectedSection,todos])
 
     // save todos
     const saveTodos=(update)=>{
@@ -153,7 +153,6 @@ export const TodoList = () => {
         setEditTimestamp("")
     }
 
-    // add section
     const handleAddSection=()=>{
         const updatedSections=[...sections,newSection.trim()]
         setSections(updatedSections)
@@ -174,6 +173,15 @@ export const TodoList = () => {
         localStorage.setItem('sections',JSON.stringify(updatedSections))
 
         setSectionDeleteModal(false)
+    }
+
+    const handleToggleComplete=(timestamp,isCompletedStatus)=>{
+        console.log(isCompletedStatus);
+        const index=todos.findIndex(todo=>todo.createdAt===timestamp)
+        const updatedTodos=[...todos]
+        updatedTodos[index]={...updatedTodos[index],["isCompleted"]:isCompletedStatus}
+        setTodos(updatedTodos)
+        saveTodos(updatedTodos)
     }
 
   return (
@@ -197,7 +205,7 @@ export const TodoList = () => {
                                 sectionTodos.length?
                                     sectionTodos.map((todo,index)=>(
                                     <>
-                                    <TodoItem key={index} timestamp={todo.createdAt} index={index} todoTask={todo.todo} handleUpdateTodo={handleUpdateTodo} editTimestamp={editTimestamp} setEditTimestamp={setEditTimestamp} handleDeleteTodo={handleDeleteTodo} createdAt={new Date(todo.createdAt).toDateString()}/>
+                                    <TodoItem key={index} isCompleted={todo.isCompleted} handleToggleComplete={handleToggleComplete} timestamp={todo.createdAt} index={index} todoTask={todo.todo} handleUpdateTodo={handleUpdateTodo} editTimestamp={editTimestamp} setEditTimestamp={setEditTimestamp} handleDeleteTodo={handleDeleteTodo} createdAt={new Date(todo.createdAt).toDateString()}/>
                                     <div style={{backgroundColor:'GrayText',height:'.1px',opacity:.4}}></div>
                                     </>
                                     ))

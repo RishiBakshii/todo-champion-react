@@ -1,10 +1,11 @@
-import { IconButton, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Checkbox, FormControlLabel, IconButton, Stack, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import CheckIcon from '@mui/icons-material/Check';
+import { CheckBox } from '@mui/icons-material';
 
-export const TodoItem = ({index,todoTask,editTimestamp,setEditTimestamp,handleDeleteTodo,handleUpdateTodo,createdAt,timestamp}) => {
+export const TodoItem = ({index,todoTask,editTimestamp,setEditTimestamp,handleDeleteTodo,handleToggleComplete,isCompleted,handleUpdateTodo,createdAt,timestamp}) => {
 
 
   // theme
@@ -31,7 +32,11 @@ export const TodoItem = ({index,todoTask,editTimestamp,setEditTimestamp,handleDe
           {
             inEditState?
             <TextField autoFocus value={todoUpdate} fullWidth multiline InputProps={{style:{color:"white"}}} sx={{mr:2}}  onChange={(e)=>setTodoUpdate(e.target.value)}/>
-            :<Typography mr={2} variant='body2' color={'whitesmoke'}>{todoTask}</Typography>
+            :
+            <Stack flexDirection={'row'} alignItems={'center'} columnGap={2}>
+                <FormControlLabel onChange={(e)=>handleToggleComplete(timestamp,e.target.checked)}  checked={isCompleted} control={<Checkbox sx={{color:'white'}}/>} />
+                <Typography sx={{textDecoration:isCompleted?"line-through":''}} mr={2} variant='body2' color={'whitesmoke'}>{todoTask}</Typography>
+            </Stack>
           }
 
           {/* action buttons */}
