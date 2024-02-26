@@ -54,7 +54,10 @@ export const TodoItem = ({index,todoTask,editTimestamp,setEditTimestamp,handleDe
         </Stack>
           
         {/*  */}
-        <Typography  color={'GrayText'} variant='body2' fontSize={'.9rem'} alignSelf={'flex-end'}>{createdAt}</Typography>
+        <Stack flexDirection={'row'} alignSelf={'flex-end'} alignItems={'center'} columnGap={2}>
+            <Typography  color={'GrayText'} variant='body2' fontSize={'.9rem'}>{createdAt}</Typography>
+            {isCompleted && <p style={{color:'green',fontSize:".8rem",fontWeight:400}}>Completed</p>}
+        </Stack>
     </Stack>
   )
 }
